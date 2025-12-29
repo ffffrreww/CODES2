@@ -1486,6 +1486,7 @@ fun EnduranceChampionScreen(onExit: () -> Unit) {
             // Check if target duration reached (300 seconds = 5 minutes)
             if (elapsedSeconds >= targetDurationSeconds) {
                 success = true
+                running = false
                 break
             }
             
@@ -1699,11 +1700,6 @@ fun EnduranceChampionScreen(onExit: () -> Unit) {
                                                 coroutineScope.launch {
                                                     delay(850L)
                                                     floatingTexts.removeAll { it.id == floatingTextId }
-                                                }
-
-                                                if (pointsBase >= targetDurationSeconds) {
-                                                    success = true
-                                                    running = false
                                                 }
                                             }
                                         }
