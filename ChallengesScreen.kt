@@ -73,6 +73,9 @@ fun ChallengesList(
     val recordBubbleKing by ds.highScoreBubbleKingFlow().collectAsState(initial = 0)
     val recordPerfectStreak by ds.highScorePerfectStreakFlow().collectAsState(initial = 0)
     val recordTimeMaster by ds.highScoreTimeMasterFlow().collectAsState(initial = 0)
+    val recordComboMaster by ds.highScoreComboMasterFlow().collectAsState(initial = 0)
+    val recordSpeedDemon by ds.highScoreSpeedDemonFlow().collectAsState(initial = 0)
+    val recordEnduranceChampion by ds.highScoreEnduranceChampionFlow().collectAsState(initial = 0)
 
     val claimed30_1 by ds.isChallengeRewardClaimedFlow(1, 30).collectAsState(initial = false)
     val claimed60_1 by ds.isChallengeRewardClaimedFlow(1, 60).collectAsState(initial = false)
@@ -85,6 +88,18 @@ fun ChallengesList(
     val claimed30_3 by ds.isChallengeRewardClaimedFlow(3, 30).collectAsState(initial = false)
     val claimed60_3 by ds.isChallengeRewardClaimedFlow(3, 60).collectAsState(initial = false)
     val claimed100_3 by ds.isChallengeRewardClaimedFlow(3, 100).collectAsState(initial = false)
+
+    val claimed30_4 by ds.isChallengeRewardClaimedFlow(4, 30).collectAsState(initial = false)
+    val claimed60_4 by ds.isChallengeRewardClaimedFlow(4, 60).collectAsState(initial = false)
+    val claimed100_4 by ds.isChallengeRewardClaimedFlow(4, 100).collectAsState(initial = false)
+
+    val claimed30_5 by ds.isChallengeRewardClaimedFlow(5, 30).collectAsState(initial = false)
+    val claimed60_5 by ds.isChallengeRewardClaimedFlow(5, 60).collectAsState(initial = false)
+    val claimed100_5 by ds.isChallengeRewardClaimedFlow(5, 100).collectAsState(initial = false)
+
+    val claimed30_6 by ds.isChallengeRewardClaimedFlow(6, 30).collectAsState(initial = false)
+    val claimed60_6 by ds.isChallengeRewardClaimedFlow(6, 60).collectAsState(initial = false)
+    val claimed100_6 by ds.isChallengeRewardClaimedFlow(6, 100).collectAsState(initial = false)
 
     Column(
         modifier = Modifier
@@ -111,6 +126,10 @@ fun ChallengesList(
             claimed30 = claimed30_1,
             claimed60 = claimed60_1,
             claimed100 = claimed100_1,
+            reward30Drawable = R.drawable.levelbubble,
+            reward30Name = "Lava Bubble",
+            reward60Drawable = R.drawable.mainmenu2,
+            reward60Name = "MainMenu Style 2",
             finalRewardDrawable = R.drawable.background6,
             finalRewardName = "Aurora Sky Background",
             ds = ds,
@@ -129,6 +148,10 @@ fun ChallengesList(
             claimed30 = claimed30_2,
             claimed60 = claimed60_2,
             claimed100 = claimed100_2,
+            reward30Drawable = R.drawable.cyberpunkbubble,
+            reward30Name = "Crystal Bubble",
+            reward60Drawable = R.drawable.mainmenu3,
+            reward60Name = "MainMenu Style 3",
             finalRewardDrawable = R.drawable. mainmenu5,
             finalRewardName = "Galaxy Core Menu",
             ds = ds,
@@ -147,10 +170,80 @@ fun ChallengesList(
             claimed30 = claimed30_3,
             claimed60 = claimed60_3,
             claimed100 = claimed100_3,
+            reward30Drawable = R.drawable.goldenbubble,
+            reward30Name = "Sunset Bubble",
+            reward60Drawable = R.drawable.mainmenu4,
+            reward60Name = "MainMenu Style 4",
             finalRewardDrawable = R. drawable.cyberpunkbubble,
             finalRewardName = "Cyberpunk Bubble",
             ds = ds,
             onPlay = { onChallengeAction(3) }
+        )
+
+        ChallengeCard(
+            challengeId = 4,
+            title = "Combo Master",
+            subtitle = "Reach 200 combo streak",
+            icon = "🔥",
+            record = recordComboMaster,
+            target = 200,
+            accentColor = Color(0xFFE91E63),
+            secondaryColor = Color(0xFFFF5722),
+            claimed30 = claimed30_4,
+            claimed60 = claimed60_4,
+            claimed100 = claimed100_4,
+            reward30Drawable = R.drawable.oceanbubble,
+            reward30Name = "Ice Bubble",
+            reward60Drawable = R.drawable.mainmenu6,
+            reward60Name = "MainMenu Style 6",
+            finalRewardDrawable = R.drawable.background9,
+            finalRewardName = "Underwater Background",
+            ds = ds,
+            onPlay = { onChallengeAction(4) }
+        )
+
+        ChallengeCard(
+            challengeId = 5,
+            title = "Speed Demon",
+            subtitle = "Pop 300 bubbles in 90s",
+            icon = "⚡",
+            record = recordSpeedDemon,
+            target = 300,
+            accentColor = Color(0xFF9C27B0),
+            secondaryColor = Color(0xFF673AB7),
+            claimed30 = claimed30_5,
+            claimed60 = claimed60_5,
+            claimed100 = claimed100_5,
+            reward30Drawable = R.drawable.spacebubble,
+            reward30Name = "Galaxy Bubble",
+            reward60Drawable = R.drawable.mainmenu7,
+            reward60Name = "MainMenu Style 7",
+            finalRewardDrawable = R.drawable.background10,
+            finalRewardName = "Desert Background",
+            ds = ds,
+            onPlay = { onChallengeAction(5) }
+        )
+
+        ChallengeCard(
+            challengeId = 6,
+            title = "Endurance Champion",
+            subtitle = "Survive for 5 minutes",
+            icon = "💪",
+            record = recordEnduranceChampion,
+            target = 300,
+            accentColor = Color(0xFF009688),
+            secondaryColor = Color(0xFF4CAF50),
+            claimed30 = claimed30_6,
+            claimed60 = claimed60_6,
+            claimed100 = claimed100_6,
+            reward30Drawable = R.drawable.goldenbubble,
+            reward30Name = "Sunset Bubble",
+            reward60Drawable = R.drawable.mainmenu8,
+            reward60Name = "MainMenu Style 8",
+            finalRewardDrawable = R.drawable.background11,
+            finalRewardName = "Candy Land Background",
+            ds = ds,
+            onPlay = { onChallengeAction(6) }
         )
 
         Spacer(modifier = Modifier. height(60.dp))
@@ -483,6 +576,10 @@ private fun ChallengeCard(
     claimed30: Boolean,
     claimed60: Boolean,
     claimed100: Boolean,
+    reward30Drawable: Int = R.drawable.coin,
+    reward30Name: String = "300 Coins",
+    reward60Drawable: Int = R.drawable.coin,
+    reward60Name: String = "700 Coins",
     finalRewardDrawable: Int,
     finalRewardName: String,
     ds: DataStoreManager,
@@ -690,6 +787,10 @@ private fun ChallengeCard(
                     claimed30 = claimed30,
                     claimed60 = claimed60,
                     claimed100 = claimed100,
+                    reward30Drawable = reward30Drawable,
+                    reward30Name = reward30Name,
+                    reward60Drawable = reward60Drawable,
+                    reward60Name = reward60Name,
                     finalRewardDrawable = finalRewardDrawable,
                     finalRewardName = finalRewardName,
                     ds = ds,
@@ -721,6 +822,10 @@ private fun RewardsRow(
     claimed30: Boolean,
     claimed60: Boolean,
     claimed100: Boolean,
+    reward30Drawable: Int,
+    reward30Name: String,
+    reward60Drawable: Int,
+    reward60Name: String,
     finalRewardDrawable: Int,
     finalRewardName: String,
     ds:  DataStoreManager,
@@ -751,12 +856,12 @@ private fun RewardsRow(
                 isClaimed = claimed30,
                 canClaim = ! claimed30 && progress >= 0.30f,
                 isLocked = progress < 0.30f,
-                rewardIcon = R.drawable.coin,
-                rewardText = "300",
+                rewardIcon = reward30Drawable,
+                rewardText = "",
                 accentColor = accentColor,
                 onClaim = { scope.launch { ds.claimChallengeReward(challengeId, 30) } },
                 onPreview = {
-                    onPreviewReward(RewardPreviewData(R.drawable.coin, "30% Reward", "300 Coins", 30, false))
+                    onPreviewReward(RewardPreviewData(reward30Drawable, "30% Reward", reward30Name, 30, false))
                 }
             )
 
@@ -767,12 +872,12 @@ private fun RewardsRow(
                 isClaimed = claimed60,
                 canClaim = !claimed60 && progress >= 0.60f,
                 isLocked = progress < 0.60f,
-                rewardIcon = R.drawable. coin,
-                rewardText = "700",
+                rewardIcon = reward60Drawable,
+                rewardText = "",
                 accentColor = accentColor,
                 onClaim = { scope.launch { ds. claimChallengeReward(challengeId, 60) } },
                 onPreview = {
-                    onPreviewReward(RewardPreviewData(R.drawable.coin, "60% Reward", "700 Coins", 60, false))
+                    onPreviewReward(RewardPreviewData(reward60Drawable, "60% Reward", reward60Name, 60, false))
                 }
             )
 
