@@ -798,13 +798,13 @@ private fun RewardsRow(
 ) {
     // Get reward info for this challenge
     val (bubbleId, bubbleDrawable, bubbleName) = when (challengeId) {
-        1 -> Triple(6, R.drawable.neonbubble, "Neon Bubble")
-        2 -> Triple(7, R.drawable.galaxybubble, "Galaxy Bubble")
-        3 -> Triple(8, R.drawable.crystalbubble, "Crystal Bubble")
-        4 -> Triple(12, R.drawable.bubble12, "Bubble 12")
-        5 -> Triple(15, R.drawable.bubble15, "Bubble 15")
-        6 -> Triple(18, R.drawable.bubble18, "Bubble 18")
-        else -> Triple(0, R.drawable.neonbubble, "Bubble")
+        1 -> Triple(6, R.drawable.oceanbubble, "Ocean Bubble")
+        2 -> Triple(7, R.drawable.bubble, "Anime Bubble")
+        3 -> Triple(8, R.drawable.spacebubble, "Space Bubble")
+        4 -> Triple(12, R.drawable.bubble, "Ice Bubble")
+        5 -> Triple(15, R.drawable.bubble, "Galaxy Bubble")
+        6 -> Triple(18, R.drawable.bubble, "Sunset Bubble")
+        else -> Triple(0, R.drawable.bubble, "Bubble")
     }
     
     val (mainMenuId, mainMenuDrawable, mainMenuName) = when (challengeId) {
