@@ -614,7 +614,7 @@ fun BKDifficultyCenterIndicator(
 @Composable
 fun ECTopBar(
     points: Int,
-    targetScore: Int,
+    targetDurationSeconds: Int,
     elapsedSeconds: Int,
     modifier: Modifier = Modifier
 ) {
@@ -624,7 +624,7 @@ fun ECTopBar(
         label = "pointsAnim"
     )
 
-    val progress = (points.toFloat() / targetScore.toFloat()).coerceIn(0f, 1f)
+    val progress = (points.toFloat() / targetDurationSeconds.toFloat()).coerceIn(0f, 1f)
 
     Box(
         modifier = modifier
@@ -655,7 +655,7 @@ fun ECTopBar(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         ECOutlinedText(
-                            text = "$pointsAnimated / $targetScore",
+                            text = "$pointsAnimated / $targetDurationSeconds",
                             fontSize = 18.sp,
                             fontWeight = FontWeight. Bold,
                             color = Color. White
@@ -1031,7 +1031,7 @@ fun ECInGameSettingsDialog(
 fun BKGameOverScreen(
     isSuccess: Boolean,
     pointsBase: Int,
-    targetScore: Int,
+    targetDurationSeconds: Int,
     elapsedSeconds: Int,
     sessionLuxEarned: Int,
     storedRecord: Int,
@@ -1139,7 +1139,7 @@ fun BKGameOverScreen(
                                 color = if (isSuccess) Color(0xFFFFD700) else Color(0xFFFF6B00)
                             )
                             ECOutlinedText(
-                                text = "/ $targetScore",
+                                text = "/ $targetDurationSeconds",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color. White.copy(alpha = 0.5f)
@@ -1307,7 +1307,7 @@ fun EnduranceChampionScreen(onExit: () -> Unit) {
     val baseLifespan = 2000L
     val minSpawn = 200L
     val minLifespan = 400L
-    val targetScore = 300  // 300 seconds = 5 minutes
+    val targetDurationSeconds = 300  // 5 minutes
 
     var difficultyMultiplier by remember { mutableDoubleStateOf(1.0) }
     var spawnIntervalMs by remember { mutableLongStateOf(baseSpawn) }
@@ -1589,7 +1589,7 @@ fun EnduranceChampionScreen(onExit: () -> Unit) {
         // Top bar
         ECTopBar(
             points = pointsBase,
-            targetScore = targetScore,
+            targetDurationSeconds = targetDurationSeconds,
             elapsedSeconds = elapsedSeconds,
             modifier = Modifier.padding(top = 70.dp)
         )
@@ -1693,7 +1693,7 @@ fun EnduranceChampionScreen(onExit: () -> Unit) {
                                                     floatingTexts.removeAll { it.id == floatingTextId }
                                                 }
 
-                                                if (pointsBase >= targetScore) {
+                                                if (pointsBase >= targetDurationSeconds) {
                                                     success = true
                                                     running = false
                                                 }
@@ -1767,7 +1767,7 @@ fun EnduranceChampionScreen(onExit: () -> Unit) {
                 BKGameOverScreen(
                     isSuccess = success,
                     pointsBase = finalPoints,
-                    targetScore = targetScore,
+                    targetDurationSeconds = targetDurationSeconds,
                     elapsedSeconds = elapsedSeconds,
                     sessionLuxEarned = sessionLuxEarned,
                     storedRecord = storedRecord,
