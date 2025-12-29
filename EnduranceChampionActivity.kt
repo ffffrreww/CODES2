@@ -624,7 +624,7 @@ fun ECTopBar(
         label = "pointsAnim"
     )
 
-    val progress = (points.toFloat() / targetDurationSeconds.toFloat()).coerceIn(0f, 1f)
+    val progress = (elapsedSeconds.toFloat() / targetDurationSeconds.toFloat()).coerceIn(0f, 1f)
 
     Box(
         modifier = modifier
@@ -655,7 +655,7 @@ fun ECTopBar(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         ECOutlinedText(
-                            text = "$pointsAnimated / $targetDurationSeconds",
+                            text = "${elapsedSeconds}s / ${targetDurationSeconds}s",
                             fontSize = 18.sp,
                             fontWeight = FontWeight. Bold,
                             color = Color. White
@@ -1482,7 +1482,15 @@ fun EnduranceChampionScreen(onExit: () -> Unit) {
         while (running && ! success && !failed) {
             delay(1000L)
             elapsedSeconds += 1
-            if (elapsedSeconds % 30 == 0) {
+            
+            // Check if target duration reached (300 seconds = 5 minutes)
+            if (elapsedSeconds >= targetDurationSeconds) {
+                success = true
+                break
+            }
+            
+            // Increase difficulty every 30 seconds (but only if not yet succeeded)
+            if (elapsedSeconds % 30 == 0 && elapsedSeconds < targetDurationSeconds) {
                 val nextMultiplier = difficultyMultiplier * 1.25
                 difficultyMultiplier = if (nextMultiplier > maxAllowedMultiplier) maxAllowedMultiplier else nextMultiplier
             }
