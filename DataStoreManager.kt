@@ -82,6 +82,9 @@ class DataStoreManager(private val context: Context) {
         val HIGH_SCORE_BUBBLE_KING = intPreferencesKey("high_score_bubble_king")
         val HIGH_SCORE_PERFECT_STREAK = intPreferencesKey("high_score_perfect_streak")
         val HIGH_SCORE_TIME_MASTER = intPreferencesKey("high_score_time_master")
+        val HIGH_SCORE_COMBO_MASTER = intPreferencesKey("high_score_combo_master")
+        val HIGH_SCORE_SPEED_DEMON = intPreferencesKey("high_score_speed_demon")
+        val HIGH_SCORE_ENDURANCE_CHAMPION = intPreferencesKey("high_score_endurance_champion")
 
         val COINS_KEY = intPreferencesKey("coins")
         val LUX_KEY = intPreferencesKey("lux")
@@ -259,6 +262,27 @@ class DataStoreManager(private val context: Context) {
 
     suspend fun saveHighScoreTimeMaster(score: Int) {
         context.dataStore.edit { prefs -> prefs[HIGH_SCORE_TIME_MASTER] = score }
+    }
+
+    fun highScoreComboMasterFlow(): Flow<Int> =
+        context.dataStore.data.map { prefs -> prefs[HIGH_SCORE_COMBO_MASTER] ?: 0 }
+
+    suspend fun saveHighScoreComboMaster(score: Int) {
+        context.dataStore.edit { prefs -> prefs[HIGH_SCORE_COMBO_MASTER] = score }
+    }
+
+    fun highScoreSpeedDemonFlow(): Flow<Int> =
+        context.dataStore.data.map { prefs -> prefs[HIGH_SCORE_SPEED_DEMON] ?: 0 }
+
+    suspend fun saveHighScoreSpeedDemon(score: Int) {
+        context.dataStore.edit { prefs -> prefs[HIGH_SCORE_SPEED_DEMON] = score }
+    }
+
+    fun highScoreEnduranceChampionFlow(): Flow<Int> =
+        context.dataStore.data.map { prefs -> prefs[HIGH_SCORE_ENDURANCE_CHAMPION] ?: 0 }
+
+    suspend fun saveHighScoreEnduranceChampion(score: Int) {
+        context.dataStore.edit { prefs -> prefs[HIGH_SCORE_ENDURANCE_CHAMPION] = score }
     }
 
     // ==================== COINS ====================
@@ -820,28 +844,50 @@ class DataStoreManager(private val context: Context) {
             prefs[key] = 1
             when (pct) {
                 30 -> {
-                    val current = prefs[COINS_KEY] ?: 0
-                    prefs[COINS_KEY] = current + 300
+                    // Desbloquear bubble según challengeId
+                    val bubbleId = when (challengeId) {
+                        1 -> 6   // Lava Bubble
+                        2 -> 7   // Crystal Bubble
+                        3 -> 8   // Sunset Bubble
+                        4 -> 12  // Ice Bubble
+                        5 -> 15  // Galaxy Bubble
+                        6 -> 18  // Sunset Bubble
+                        else -> 6
+                    }
+                    val bubbleKey = purchaseBubbleKeyForId(bubbleId)
+                    prefs[bubbleKey] = 1
+                    prefs[EQUIPPED_BUBBLE] = bubbleId
                 }
                 60 -> {
-                    val current = prefs[COINS_KEY] ?:  0
-                    prefs[COINS_KEY] = current + 700
+                    // Desbloquear mainmenu según challengeId
+                    val menuId = when (challengeId) {
+                        1 -> 2
+                        2 -> 3
+                        3 -> 4
+                        4 -> 6
+                        5 -> 7
+                        6 -> 8
+                        else -> 2
+                    }
+                    val menuKey = purchaseMainMenuKeyForId(menuId)
+                    prefs[menuKey] = 1
+                    prefs[EQUIPPED_MAINMENU] = menuId
                 }
                 100 -> {
-                    when (challengeId) {
-                        1 -> {
-                            prefs[PURCHASE_BG_6] = 1
-                            prefs[EQUIPPED_BG] = 6
-                        }
-                        2 -> {
-                            prefs[PURCHASE_MAINMENU_5] = 1
-                            prefs[EQUIPPED_MAINMENU] = 5
-                        }
-                        3 -> {
-                            prefs[PURCHASE_BUBBLE_5] = 1
-                            prefs[EQUIPPED_BUBBLE] = 5
-                        }
+                    // Desbloquear background según challengeId
+                    val bgId = when (challengeId) {
+                        1 -> 6
+                        2 -> 7
+                        3 -> 8
+                        4 -> 9
+                        5 -> 10
+                        6 -> 11
+                        else -> 6
                     }
+                    val bgKey = purchaseBgKeyForId(bgId)
+                    prefs[bgKey] = 1
+                    prefs[EQUIPPED_BG] = bgId
+                    
                     val currentCount = prefs[CHALLENGES_COMPLETED_COUNT] ?: 0
                     prefs[CHALLENGES_COMPLETED_COUNT] = currentCount + 1
                 }
