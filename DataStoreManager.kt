@@ -82,6 +82,9 @@ class DataStoreManager(private val context: Context) {
         val HIGH_SCORE_BUBBLE_KING = intPreferencesKey("high_score_bubble_king")
         val HIGH_SCORE_PERFECT_STREAK = intPreferencesKey("high_score_perfect_streak")
         val HIGH_SCORE_TIME_MASTER = intPreferencesKey("high_score_time_master")
+        val HIGH_SCORE_COMBO_MASTER = intPreferencesKey("high_score_combo_master")
+        val HIGH_SCORE_SPEED_DEMON = intPreferencesKey("high_score_speed_demon")
+        val HIGH_SCORE_ENDURANCE_CHAMPION = intPreferencesKey("high_score_endurance_champion")
 
         val COINS_KEY = intPreferencesKey("coins")
         val LUX_KEY = intPreferencesKey("lux")
@@ -259,6 +262,27 @@ class DataStoreManager(private val context: Context) {
 
     suspend fun saveHighScoreTimeMaster(score: Int) {
         context.dataStore.edit { prefs -> prefs[HIGH_SCORE_TIME_MASTER] = score }
+    }
+
+    fun highScoreComboMasterFlow(): Flow<Int> =
+        context.dataStore.data.map { prefs -> prefs[HIGH_SCORE_COMBO_MASTER] ?: 0 }
+
+    suspend fun saveHighScoreComboMaster(score: Int) {
+        context.dataStore.edit { prefs -> prefs[HIGH_SCORE_COMBO_MASTER] = score }
+    }
+
+    fun highScoreSpeedDemonFlow(): Flow<Int> =
+        context.dataStore.data.map { prefs -> prefs[HIGH_SCORE_SPEED_DEMON] ?: 0 }
+
+    suspend fun saveHighScoreSpeedDemon(score: Int) {
+        context.dataStore.edit { prefs -> prefs[HIGH_SCORE_SPEED_DEMON] = score }
+    }
+
+    fun highScoreEnduranceChampionFlow(): Flow<Int> =
+        context.dataStore.data.map { prefs -> prefs[HIGH_SCORE_ENDURANCE_CHAMPION] ?: 0 }
+
+    suspend fun saveHighScoreEnduranceChampion(score: Int) {
+        context.dataStore.edit { prefs -> prefs[HIGH_SCORE_ENDURANCE_CHAMPION] = score }
     }
 
     // ==================== COINS ====================
@@ -818,29 +842,58 @@ class DataStoreManager(private val context: Context) {
                 return@edit
             }
             prefs[key] = 1
+            
+            // Reward mapping for all 6 challenges
             when (pct) {
                 30 -> {
-                    val current = prefs[COINS_KEY] ?: 0
-                    prefs[COINS_KEY] = current + 300
+                    // Unlock bubble based on challengeId
+                    val bubbleId = when (challengeId) {
+                        1 -> 6  // Bubble 6 (Neon Bubble)
+                        2 -> 7  // Bubble 7 (Galaxy Bubble)
+                        3 -> 8  // Bubble 8 (Crystal Bubble)
+                        4 -> 12 // Bubble 12
+                        5 -> 15 // Bubble 15
+                        6 -> 18 // Bubble 18
+                        else -> 0
+                    }
+                    if (bubbleId > 0) {
+                        val bubbleKey = purchaseBubbleKeyForId(bubbleId)
+                        prefs[bubbleKey] = 1
+                        prefs[EQUIPPED_BUBBLE] = bubbleId
+                    }
                 }
                 60 -> {
-                    val current = prefs[COINS_KEY] ?:  0
-                    prefs[COINS_KEY] = current + 700
+                    // Unlock mainmenu based on challengeId
+                    val mainMenuId = when (challengeId) {
+                        1 -> 2  // MainMenu 2
+                        2 -> 3  // MainMenu 3
+                        3 -> 4  // MainMenu 4
+                        4 -> 6  // MainMenu 6
+                        5 -> 7  // MainMenu 7
+                        6 -> 8  // MainMenu 8
+                        else -> 0
+                    }
+                    if (mainMenuId > 0) {
+                        val mainMenuKey = purchaseMainMenuKeyForId(mainMenuId)
+                        prefs[mainMenuKey] = 1
+                        prefs[EQUIPPED_MAINMENU] = mainMenuId
+                    }
                 }
                 100 -> {
-                    when (challengeId) {
-                        1 -> {
-                            prefs[PURCHASE_BG_6] = 1
-                            prefs[EQUIPPED_BG] = 6
-                        }
-                        2 -> {
-                            prefs[PURCHASE_MAINMENU_5] = 1
-                            prefs[EQUIPPED_MAINMENU] = 5
-                        }
-                        3 -> {
-                            prefs[PURCHASE_BUBBLE_5] = 1
-                            prefs[EQUIPPED_BUBBLE] = 5
-                        }
+                    // Unlock background based on challengeId
+                    val bgId = when (challengeId) {
+                        1 -> 6  // Background 6 (Aurora Sky)
+                        2 -> 7  // Background 7
+                        3 -> 8  // Background 8
+                        4 -> 9  // Background 9
+                        5 -> 10 // Background 10
+                        6 -> 11 // Background 11
+                        else -> 0
+                    }
+                    if (bgId > 0) {
+                        val bgKey = purchaseBgKeyForId(bgId)
+                        prefs[bgKey] = 1
+                        prefs[EQUIPPED_BG] = bgId
                     }
                     val currentCount = prefs[CHALLENGES_COMPLETED_COUNT] ?: 0
                     prefs[CHALLENGES_COMPLETED_COUNT] = currentCount + 1

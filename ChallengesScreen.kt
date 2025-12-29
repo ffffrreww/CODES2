@@ -73,6 +73,9 @@ fun ChallengesList(
     val recordBubbleKing by ds.highScoreBubbleKingFlow().collectAsState(initial = 0)
     val recordPerfectStreak by ds.highScorePerfectStreakFlow().collectAsState(initial = 0)
     val recordTimeMaster by ds.highScoreTimeMasterFlow().collectAsState(initial = 0)
+    val recordComboMaster by ds.highScoreComboMasterFlow().collectAsState(initial = 0)
+    val recordSpeedDemon by ds.highScoreSpeedDemonFlow().collectAsState(initial = 0)
+    val recordEnduranceChampion by ds.highScoreEnduranceChampionFlow().collectAsState(initial = 0)
 
     val claimed30_1 by ds.isChallengeRewardClaimedFlow(1, 30).collectAsState(initial = false)
     val claimed60_1 by ds.isChallengeRewardClaimedFlow(1, 60).collectAsState(initial = false)
@@ -85,6 +88,18 @@ fun ChallengesList(
     val claimed30_3 by ds.isChallengeRewardClaimedFlow(3, 30).collectAsState(initial = false)
     val claimed60_3 by ds.isChallengeRewardClaimedFlow(3, 60).collectAsState(initial = false)
     val claimed100_3 by ds.isChallengeRewardClaimedFlow(3, 100).collectAsState(initial = false)
+
+    val claimed30_4 by ds.isChallengeRewardClaimedFlow(4, 30).collectAsState(initial = false)
+    val claimed60_4 by ds.isChallengeRewardClaimedFlow(4, 60).collectAsState(initial = false)
+    val claimed100_4 by ds.isChallengeRewardClaimedFlow(4, 100).collectAsState(initial = false)
+
+    val claimed30_5 by ds.isChallengeRewardClaimedFlow(5, 30).collectAsState(initial = false)
+    val claimed60_5 by ds.isChallengeRewardClaimedFlow(5, 60).collectAsState(initial = false)
+    val claimed100_5 by ds.isChallengeRewardClaimedFlow(5, 100).collectAsState(initial = false)
+
+    val claimed30_6 by ds.isChallengeRewardClaimedFlow(6, 30).collectAsState(initial = false)
+    val claimed60_6 by ds.isChallengeRewardClaimedFlow(6, 60).collectAsState(initial = false)
+    val claimed100_6 by ds.isChallengeRewardClaimedFlow(6, 100).collectAsState(initial = false)
 
     Column(
         modifier = Modifier
@@ -129,8 +144,8 @@ fun ChallengesList(
             claimed30 = claimed30_2,
             claimed60 = claimed60_2,
             claimed100 = claimed100_2,
-            finalRewardDrawable = R.drawable. mainmenu5,
-            finalRewardName = "Galaxy Core Menu",
+            finalRewardDrawable = R.drawable.background7,
+            finalRewardName = "Background 7",
             ds = ds,
             onPlay = { onChallengeAction(2) }
         )
@@ -147,10 +162,64 @@ fun ChallengesList(
             claimed30 = claimed30_3,
             claimed60 = claimed60_3,
             claimed100 = claimed100_3,
-            finalRewardDrawable = R. drawable.cyberpunkbubble,
-            finalRewardName = "Cyberpunk Bubble",
+            finalRewardDrawable = R.drawable.background8,
+            finalRewardName = "Background 8",
             ds = ds,
             onPlay = { onChallengeAction(3) }
+        )
+
+        ChallengeCard(
+            challengeId = 4,
+            title = "Combo Master",
+            subtitle = "Reach 200 combo streak",
+            icon = "🔥",
+            record = recordComboMaster,
+            target = 200,
+            accentColor = Color(0xFFE91E63),
+            secondaryColor = Color(0xFFFF5722),
+            claimed30 = claimed30_4,
+            claimed60 = claimed60_4,
+            claimed100 = claimed100_4,
+            finalRewardDrawable = R.drawable.background9,
+            finalRewardName = "Background 9",
+            ds = ds,
+            onPlay = { onChallengeAction(4) }
+        )
+
+        ChallengeCard(
+            challengeId = 5,
+            title = "Speed Demon",
+            subtitle = "Pop 300 bubbles in 90s",
+            icon = "⚡",
+            record = recordSpeedDemon,
+            target = 300,
+            accentColor = Color(0xFF9C27B0),
+            secondaryColor = Color(0xFF673AB7),
+            claimed30 = claimed30_5,
+            claimed60 = claimed60_5,
+            claimed100 = claimed100_5,
+            finalRewardDrawable = R.drawable.background10,
+            finalRewardName = "Background 10",
+            ds = ds,
+            onPlay = { onChallengeAction(5) }
+        )
+
+        ChallengeCard(
+            challengeId = 6,
+            title = "Endurance Champion",
+            subtitle = "Survive 5 minutes",
+            icon = "💪",
+            record = recordEnduranceChampion,
+            target = 300,
+            accentColor = Color(0xFF009688),
+            secondaryColor = Color(0xFF4CAF50),
+            claimed30 = claimed30_6,
+            claimed60 = claimed60_6,
+            claimed100 = claimed100_6,
+            finalRewardDrawable = R.drawable.background11,
+            finalRewardName = "Background 11",
+            ds = ds,
+            onPlay = { onChallengeAction(6) }
         )
 
         Spacer(modifier = Modifier. height(60.dp))
@@ -727,6 +796,27 @@ private fun RewardsRow(
     scope: kotlinx.coroutines.CoroutineScope,
     onPreviewReward: (RewardPreviewData) -> Unit
 ) {
+    // Get reward info for this challenge
+    val (bubbleId, bubbleDrawable, bubbleName) = when (challengeId) {
+        1 -> Triple(6, R.drawable.oceanbubble, "Ocean Bubble")
+        2 -> Triple(7, R.drawable.bubble, "Anime Bubble")
+        3 -> Triple(8, R.drawable.spacebubble, "Space Bubble")
+        4 -> Triple(12, R.drawable.bubble, "Ice Bubble")
+        5 -> Triple(15, R.drawable.bubble, "Galaxy Bubble")
+        6 -> Triple(18, R.drawable.bubble, "Sunset Bubble")
+        else -> Triple(0, R.drawable.bubble, "Bubble")
+    }
+    
+    val (mainMenuId, mainMenuDrawable, mainMenuName) = when (challengeId) {
+        1 -> Triple(2, R.drawable.mainmenu2, "MainMenu 2")
+        2 -> Triple(3, R.drawable.mainmenu3, "MainMenu 3")
+        3 -> Triple(4, R.drawable.mainmenu4, "MainMenu 4")
+        4 -> Triple(6, R.drawable.mainmenu6, "MainMenu 6")
+        5 -> Triple(7, R.drawable.mainmenu7, "MainMenu 7")
+        6 -> Triple(8, R.drawable.mainmenu8, "MainMenu 8")
+        else -> Triple(0, R.drawable.mainmenu2, "MainMenu")
+    }
+    
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(text = "🎁", fontSize = 14.sp)
@@ -751,12 +841,12 @@ private fun RewardsRow(
                 isClaimed = claimed30,
                 canClaim = ! claimed30 && progress >= 0.30f,
                 isLocked = progress < 0.30f,
-                rewardIcon = R.drawable.coin,
-                rewardText = "300",
+                rewardIcon = bubbleDrawable,
+                rewardText = "",
                 accentColor = accentColor,
                 onClaim = { scope.launch { ds.claimChallengeReward(challengeId, 30) } },
                 onPreview = {
-                    onPreviewReward(RewardPreviewData(R.drawable.coin, "30% Reward", "300 Coins", 30, false))
+                    onPreviewReward(RewardPreviewData(bubbleDrawable, "30% Reward", bubbleName, 30, false))
                 }
             )
 
@@ -767,12 +857,12 @@ private fun RewardsRow(
                 isClaimed = claimed60,
                 canClaim = !claimed60 && progress >= 0.60f,
                 isLocked = progress < 0.60f,
-                rewardIcon = R.drawable. coin,
-                rewardText = "700",
+                rewardIcon = mainMenuDrawable,
+                rewardText = "",
                 accentColor = accentColor,
                 onClaim = { scope.launch { ds. claimChallengeReward(challengeId, 60) } },
                 onPreview = {
-                    onPreviewReward(RewardPreviewData(R.drawable.coin, "60% Reward", "700 Coins", 60, false))
+                    onPreviewReward(RewardPreviewData(mainMenuDrawable, "60% Reward", mainMenuName, 60, false))
                 }
             )
 
@@ -865,17 +955,21 @@ private fun RewardItem(
             if (isClaimed) {
                 Text(text = "✓", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4CAF50))
             } else {
-                Column(horizontalAlignment = Alignment. CenterHorizontally) {
-                    Image(
-                        painter = painterResource(id = rewardIcon),
-                        contentDescription = null,
-                        modifier = Modifier. size(24.dp).alpha(if (isLocked) 0.4f else 1f)
-                    )
+                Image(
+                    painter = painterResource(id = rewardIcon),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(if (rewardText.isEmpty()) 36.dp else 24.dp)
+                        .clip(RoundedCornerShape(6.dp))
+                        .alpha(if (isLocked) 0.4f else 1f)
+                )
+                
+                if (rewardText.isNotEmpty()) {
                     Text(
                         text = rewardText,
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if (isLocked) Color.White. copy(alpha = 0.4f) else Color(0xFFFFD700)
+                        color = if (isLocked) Color.White.copy(alpha = 0.4f) else Color(0xFFFFD700)
                     )
                 }
 
